@@ -8,8 +8,8 @@ public class YahooLandingPage {
 
     ChromeDriver driver;
 
-    public YahooLandingPage(ChromeDriver _driver) {
-        driver = _driver;
+    public YahooLandingPage(ChromeDriver driver) {
+        this.driver = driver;
     }
 
     void clickCreateAccount() {

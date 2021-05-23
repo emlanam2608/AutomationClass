@@ -7,8 +7,8 @@ public class YahooLoginPage {
     By btnLoginCreateAccount = By.xpath("//a[@id='createacc']");
 
     ChromeDriver driver;
-    YahooLoginPage(ChromeDriver _driver) {
-        driver = _driver;
+    YahooLoginPage(ChromeDriver driver) {
+        this.driver = driver;
     }
 
     void clickCreateAccount() {

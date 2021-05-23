@@ -1,7 +1,7 @@
-package Selenium;
+package Utils;
 
 public class Utilities {
-    static void sleep(long sec) {
+    public static void sleep(long sec) {
         try {
             Thread.sleep(sec * 1000);
         } catch (InterruptedException ex) {
@@ -27,14 +27,14 @@ public class Utilities {
         }
     }
 
-    static int[] dateOfBirthValidator(String dateOfBirth) {
+    public static int[] dateOfBirthValidator(String dateOfBirth) {
         //dd-mm-yyyy
-        String[] listOfSeperateSymbol = {"/", "-",};
+        String[] listOfSeparatesSymbol = {"/", "-",};
         String[] splitDateOfBirth = {};
 
-        for (int i = 0; i < listOfSeperateSymbol.length; i++) {
-            if (dateOfBirth.contains(listOfSeperateSymbol[i])) {
-                splitDateOfBirth = dateOfBirth.split(listOfSeperateSymbol[i]);
+        for (int i = 0; i < listOfSeparatesSymbol.length; i++) {
+            if (dateOfBirth.contains(listOfSeparatesSymbol[i])) {
+                splitDateOfBirth = dateOfBirth.split(listOfSeparatesSymbol[i]);
             }
         }
 

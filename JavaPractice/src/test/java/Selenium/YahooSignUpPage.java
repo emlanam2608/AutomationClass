@@ -1,5 +1,6 @@
 package Selenium;
 
+import Utils.Utilities;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -23,8 +24,8 @@ public class YahooSignUpPage {
 
     ChromeDriver driver;
 
-    YahooSignUpPage(ChromeDriver _driver) {
-        driver = _driver;
+    YahooSignUpPage(ChromeDriver driver) {
+        this.driver = driver;
     }
 
     By selectMonthOption(int month) {
