@@ -5,30 +5,29 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class AmazonSearchResultPage {
-
-    ChromeDriver driver;
-    WebDriverWait wait;
-
+public class AmazonSearchResultPage extends BasePage {
     public AmazonSearchResultPage(ChromeDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, 30);
+        super(driver);
     }
 
-    String findSearchResult(int resultIndex) {
+    By searchResult(int resultIndex) {
+        return By.xpath(String
+                .format("//div[@data-cel-widget='search_result_%s']//h2//a", Integer.toString(resultIndex)));
+    }
 
-        return String.format("//div[@data-cel-widget='search_result_%s']", Integer.toString(resultIndex));
+    By textTitleSearchResult(int resultIndex) {
+        return By.xpath(String
+                .format("//div[@data-cel-widget='search_result_%s']//h2//span", Integer.toString(resultIndex)));
     }
 
     public String getTextResultTitle(int resultIndex) {
-        By locator = By.xpath(findSearchResult(resultIndex) + "//h2//span");
-
-        return driver.findElement(locator).getText();
+        logger.info("-----Getting result title");
+        return driver.findElement(textTitleSearchResult(resultIndex)).getText();
     }
 
     public void openSearchResult(int resultIndex) {
-        By locator = By.xpath(findSearchResult(resultIndex) + "//h2//a");
-        wait.until(ExpectedConditions.elementToBeClickable(locator));
-        driver.findElement(locator).click();
+        logger.info(String.format("Opening result %d", resultIndex));
+        wait.until(ExpectedConditions.elementToBeClickable(searchResult(resultIndex)));
+        driver.findElement(searchResult(resultIndex)).click();
     }
 }

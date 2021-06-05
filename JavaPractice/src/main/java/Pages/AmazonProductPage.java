@@ -2,38 +2,53 @@ package Pages;
 
 import Utils.Utilities;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class AmazonProductPage {
-
+public class AmazonProductPage extends BasePage {
     By dropdownSize = By.xpath("//span[@id='dropdown_selected_size_name']");
 
     By optionSize(String size) {
         return By.xpath(String.format("//a[contains(@id, 'dropdown_selected_size_name') and text()=%s]", size));
     }
 
+    By optionSizes = By.xpath("//a[contains(@id, \"dropdown_selected_size_name\")]");
+
     By optionColor(String color, int index) {
         return By.xpath(String.format("(//img[contains(@alt, '%s')])[%d]//ancestor::button", color, index));
     }
 
     By btnAddToCart = By.xpath("//input[@id='add-to-cart-button']");
-    ChromeDriver driver;
-    WebDriverWait wait;
 
     public AmazonProductPage(ChromeDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, 30);
+        super(driver);
     }
 
-    public void selectSize(String size) {
+    public List<String> getSizesList() {
+        List<String> sizes = new ArrayList<String>();
+        wait.until(ExpectedConditions.elementToBeClickable(optionSizes));
+        List<WebElement> sizeElements = driver.findElements(optionSizes);
+        for (int i = 1; i < sizeElements.size(); i++) {
+            sizes.add(sizeElements.get(i).getText());
+        }
+        return sizes;
+    }
+
+    public void selectRandomSize() {
+        logger.info("-----Selecting random size");
+        logger.info("Click sizes dropdown");
         wait.until(ExpectedConditions.elementToBeClickable(dropdownSize));
         driver.findElement(dropdownSize).click();
-        wait.until(ExpectedConditions.elementToBeClickable(dropdownSize));
-        driver.findElement(optionSize(size)).click();
+        List<String> sizes = getSizesList();
+
+//        wait.until(ExpectedConditions.elementToBeClickable(dropdownSize));
+//        driver.findElement(optionSize(size)).click();
     }
 
     public void selectColor(String color) {

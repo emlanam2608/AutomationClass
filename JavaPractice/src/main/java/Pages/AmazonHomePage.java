@@ -5,9 +5,10 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import sun.rmi.runtime.Log;
 
 
-public class AmazonHomePage {
+public class AmazonHomePage extends BasePage {
     //navbar
     By btnLogo = By.xpath("//a[@id='nav-logo-sprites']");
     By btnDeliverTo = By.xpath("//a[@id='nav-global-location-popover-link']");
@@ -98,30 +99,35 @@ public class AmazonHomePage {
     By btnFooterCustomerPreferences = By.xpath("//a[@id='icp-touch-link-cop']");
     By btnFooterSelectCountry = By.xpath("//a[@id='icp-touch-link-country']");
 
-    ChromeDriver driver;
-    WebDriverWait wait;
+
 
     public AmazonHomePage(ChromeDriver driver) {
-        this.driver = driver;
-        this.wait = new WebDriverWait(driver, 30);
+        super(driver);
     }
 
     public void search(String searchText) {
+        logger.info(String.format("-----Searching for '%s'", searchText));
+        logger.info(String.format("Input %s", searchText));
         driver.findElement(inputSearch).sendKeys(searchText);
+        logger.info("Click search button");
         driver.findElement(btnSearchSubmit).click();
     }
 
     public void changeDeliverTo(String countryName) {
-
+        logger.info(String.format("-----Changing delivery location to '%s'", countryName));
+        logger.info("Click delivery button");
         driver.findElement(btnDeliverTo).click();
         wait.until(ExpectedConditions.elementToBeClickable(selectDeliverTo));
+        logger.info("Click countries dropdown");
         driver.findElement(selectDeliverTo).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(optionDeliverCountry(countryName)));
+        logger.info(String.format("Select country: '%s'", countryName));
         driver.findElement(optionDeliverCountry(countryName)).click();
         String currentCountry = driver.findElement(currentDeliverCountry).getText();
         if (!countryName.contains(currentCountry)) {
             throw new IllegalStateException("Unexpected value: " + countryName);
         }
+        logger.info("Click confirm button");
         driver.findElement(btnDeliverConfirm).click();
         Utilities.sleep(3);
     }
