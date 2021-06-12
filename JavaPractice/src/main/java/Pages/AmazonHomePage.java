@@ -4,14 +4,13 @@ import Utils.Utilities;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import sun.rmi.runtime.Log;
 
 
 public class AmazonHomePage extends BasePage {
     //navbar
     By btnLogo = By.xpath("//a[@id='nav-logo-sprites']");
     By btnDeliverTo = By.xpath("//a[@id='nav-global-location-popover-link']");
+    By textDeliverTo = By.xpath("//span[@id='glow-ingress-line2']");
     By selectDeliverTo = By.xpath("//span[contains(@id, 'CountryValue')]/..");
 
     By optionDeliverCountry(String countryName) {
@@ -32,6 +31,7 @@ public class AmazonHomePage extends BasePage {
     By btnAccount = By.xpath("//a[@id='nav-link-accountList']");
     By btnOrders = By.xpath("//a[@id='nav-orders']");
     By btnCart = By.xpath("//a[@id='nav-cart']");
+    By textItemsInCart = By.xpath("//span[@id='nav-cart-count']");
     By btnLeftMenu = By.xpath("//a[@id='nav-hamburger-menu']");
     By btnTodayDeals = By.xpath("//div[@id='nav-xshop']/a[contains(text(), \"Today's Deals\")]");
     By btnCustomerService = By.xpath("//div[@id='nav-xshop']/a[contains(text(), 'Customer Service')]");
@@ -107,7 +107,7 @@ public class AmazonHomePage extends BasePage {
 
     public void search(String searchText) {
         logger.info(String.format("-----Searching for '%s'", searchText));
-        logger.info(String.format("Input %s", searchText));
+        logger.info(String.format("Input '%s'", searchText));
         driver.findElement(inputSearch).sendKeys(searchText);
         logger.info("Click search button");
         driver.findElement(btnSearchSubmit).click();
@@ -127,8 +127,25 @@ public class AmazonHomePage extends BasePage {
         if (!countryName.contains(currentCountry)) {
             throw new IllegalStateException("Unexpected value: " + countryName);
         }
+        Utilities.sleep(1);
         logger.info("Click confirm button");
         driver.findElement(btnDeliverConfirm).click();
         Utilities.sleep(3);
+    }
+
+    public String getTextDeliverTo() {
+        logger.info("-----Getting Deliver to location");
+        return driver.findElement(textDeliverTo).getText();
+    }
+
+    public void openCart() {
+        logger.info("-----Opening cart");
+        wait.until(ExpectedConditions.elementToBeClickable(btnCart));
+        driver.findElement(btnCart).click();
+    }
+
+    public int getNumbersItemsInCart() {
+        logger.info("-----Getting numbers item in cart");
+        return Integer.parseInt(driver.findElement(textItemsInCart).getText());
     }
 }

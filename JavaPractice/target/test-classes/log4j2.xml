@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>;
+<?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
     <Properties>
         <Property name="pattern">%d{HH:mm:ss}{GMT+7}|%2.2T|%5.5p| - %m%n</Property>

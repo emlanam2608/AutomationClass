@@ -1,5 +1,10 @@
 package Utils;
 
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+
 public class Utilities {
     public static void sleep(long sec) {
         try {
@@ -32,9 +37,9 @@ public class Utilities {
         String[] listOfSeparatesSymbol = {"/", "-",};
         String[] splitDateOfBirth = {};
 
-        for (int i = 0; i < listOfSeparatesSymbol.length; i++) {
-            if (dateOfBirth.contains(listOfSeparatesSymbol[i])) {
-                splitDateOfBirth = dateOfBirth.split(listOfSeparatesSymbol[i]);
+        for (String s : listOfSeparatesSymbol) {
+            if (dateOfBirth.contains(s)) {
+                splitDateOfBirth = dateOfBirth.split(s);
             }
         }
 
@@ -76,5 +81,21 @@ public class Utilities {
         } else {
             throw new IllegalStateException("Unexpected value: " + dateOfBirth);
         }
+    }
+
+    public static void scrollToBottom(JavascriptExecutor js) {
+        //This will scroll the web page till end.
+        long scrollHeight = 0;
+
+        while ((long) js.executeScript("return document.body.scrollHeight") > scrollHeight) {
+            scrollHeight = (long) js.executeScript("return document.body.scrollHeight");
+            js.executeScript(String.format("window.scrollTo(0, %d)", scrollHeight));
+        }
+    }
+
+    public static void scrollInElement(JavascriptExecutor js, Actions action, WebElement element) {
+        //Hover and scroll in element
+        action.moveToElement(element).perform();
+        js.executeScript("scrollTo(0, 200)");
     }
 }
